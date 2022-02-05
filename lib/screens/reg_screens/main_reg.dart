@@ -17,7 +17,7 @@ class _mainRegisterState extends State<mainRegister> {
           title: Text("Foodies",style: TextStyle(fontWeight: FontWeight.bold),),
           centerTitle: true,
           toolbarHeight: 100,
-          backgroundColor: Colors.green.shade300,
+          backgroundColor: Colors.red.shade300,
         ),
         body: Center(
           child: Column(
@@ -31,7 +31,7 @@ class _mainRegisterState extends State<mainRegister> {
                     ),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green.shade300),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade300),
                   ),
                   onPressed: (){
                     print("In register page");
@@ -48,7 +48,7 @@ class _mainRegisterState extends State<mainRegister> {
                     ),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green.shade300),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade300),
                   ),
                   onPressed: (){
                     print("In register page");
