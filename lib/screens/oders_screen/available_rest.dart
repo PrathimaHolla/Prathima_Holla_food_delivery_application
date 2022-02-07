@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapplication/database/database_helper.dart';
 import 'package:fooddeliveryapplication/models/food_items.dart';
 import 'package:fooddeliveryapplication/models/restaurant.dart';
 import 'package:fooddeliveryapplication/screens/oders_screen/adding_form.dart';
@@ -16,20 +17,25 @@ class availableRest extends StatefulWidget {
 
 class _availableRestState extends State<availableRest> {
   RestAuth restAuth=new RestAuth();
-  late final List<Restaurant> restaurant;
+  // late Future<List<Restaurant>> res;
+  late List<Restaurant> restaurants;
   int countRest=0;
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
+    print("in init");
     initiateFunction();
+    super.initState();
+    
   }
 Future<void> initiateFunction() async {
     // TODO: implement initState
-    
-    restaurant=restAuth.getAllRest() as List<Restaurant>;
+    print("In initiate function!");
+    // res=restAuth.getAllRest() ;
+    restaurants=await DatabaseHelper.instance.getAllRest();
     countRest=await restAuth.getcountRest('restaurant');
     print(countRest.toString()+" the number of rest");
+    
   }
 
   @override
@@ -51,17 +57,32 @@ Future<void> initiateFunction() async {
                 
               },
               child:Container(
-                width: 500,
-                height:200,//change to 500 if needed
+
+                width: MediaQuery.of(context).size.width,
+                height:MediaQuery.of(context).size.height,
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: countRest,
                   itemBuilder: (context,index){
-                    return Text(
-                      // restaurant[index].restName,
-                      countRest.toString(),
-                      style:TextStyle(
-                        fontSize: 20,
+                    return 
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height:100,
+                      padding: EdgeInsets.fromLTRB(20,10,20,10),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade100,
+                        border: Border.all(color: Colors.red.shade300,width: 2.0),
+                        shape: BoxShape.rectangle,
+                      ),
+                      alignment:Alignment.center,
+                      child: Text(
+                        restaurants[index].restName,
+                        // 'aa',
+                        style:TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400
+                        ),
                       ),
                     );
                   }
@@ -73,7 +94,7 @@ Future<void> initiateFunction() async {
         ),
       
         ]
-        )
+      )
     );
   }
 }

@@ -13,6 +13,9 @@ class RestAuth extends Model{
 
   Future<List<Restaurant>> getAllRest() async{
     List<Restaurant> res=await DatabaseHelper.instance.getAllRest();
+    for (var r in res) {
+      print("id:"+r.restId.toString()+"\nname"+r.restName);
+    }
     return res;
   }
 
