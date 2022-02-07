@@ -1,10 +1,23 @@
 class Restaurant{
-  String restaurantName;
-  String password;
-  int restID;
+  String restName;
+  String restPassword;
+  int restId;
   Restaurant({
-    this.password='',
-    this.restaurantName='',
-    this.restID=0,
+    this.restPassword='',
+    this.restName='',
+    this.restId=0,
   });
+
+  Map<String,dynamic> toMap(){
+    return{
+      'restId':restId,
+      'restName':restName,
+      'restPassword':restPassword,
+    };
+  }
+
+  @override
+  String toString(){
+    return 'restaurant{restId:$restId,restName:$restName,restPassword:$restPassword}';
+  }
 }

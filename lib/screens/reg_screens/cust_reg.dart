@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapplication/models/user.dart';
+import 'package:fooddeliveryapplication/screens/oders_screen/available_rest.dart';
+import 'package:fooddeliveryapplication/service/user_service.dart';
 
 class custReg extends StatefulWidget {
   // const custReg({ Key? key }) : super(key: key);
@@ -9,12 +11,19 @@ class custReg extends StatefulWidget {
 }
 
 class _custRegState extends State<custReg> {
+  late final int userId;
   final _formKey=GlobalKey<FormState>();
+  final UserAuth userAuth=new UserAuth();
   User user=new User();
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red.shade300,
+        title: Text("Foodies!"),
+        centerTitle: true,
+      ),
+      body: Form(
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -33,7 +42,7 @@ class _custRegState extends State<custReg> {
             Container(
               padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
               child: Text(
-                "Name",
+                "Customer Name",
                 style:TextStyle(
                   color: Colors.red.shade300,
                   fontSize: 20,
@@ -43,12 +52,18 @@ class _custRegState extends State<custReg> {
             Container(
               padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
               child: TextFormField(
-                
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  labelText:"Name",
+                  labelStyle: TextStyle(
+                    color: Colors.red.shade300
+                  )
+                ),
                 validator: (value){
-                  return value!.isEmpty?"Enter Name":null;
+                  return value!.isEmpty?"Enter your Name":null;
                 },
                 onSaved: (value){
-                  user.userName=value.toString();
+                 user.userName=value.toString();
                 },
               ),
             ),
@@ -65,18 +80,32 @@ class _custRegState extends State<custReg> {
             Container(
               padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
               child: TextFormField(
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  labelText:"Password",
+                  labelStyle: TextStyle(
+                    color: Colors.red.shade300
+                  )
+                ),
                 validator: (value){
                   return value!.isEmpty?"Enter Password":null;
                 },
                 onSaved: (value){
-                  user.password=value.toString();
+                  user.userPassword=value.toString();
                 },
               ),
             ),
             ElevatedButton(
-              onPressed: (){
+              onPressed: () async {
               //add to db
-
+                if(_formKey.currentState!.validate()){
+                  _formKey.currentState!.save();
+                  user.userId=await(userAuth.getcountUser('user')  )+1;
+                  print("rest id in rest reg:"+user.userId.toString());
+                  await userAuth.addUser(user,'user');
+                  // Navigator.pushReplacementNamed(context,'/addingItem');
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>availableRest(userId:user.userId)));
+                }
               }, 
               child: Text(
                 "Register",
@@ -89,5 +118,6 @@ class _custRegState extends State<custReg> {
         ),
       ),
     );
+  
   }
 }

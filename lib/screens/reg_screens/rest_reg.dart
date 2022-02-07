@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapplication/models/restaurant.dart';
+import 'package:fooddeliveryapplication/screens/oders_screen/adding_new_item.dart';
+import 'package:fooddeliveryapplication/service/rest_service.dart';
 
 class restReg extends StatefulWidget {
   // const restReg({ Key? key }) : super(key: key);
@@ -10,7 +12,9 @@ class restReg extends StatefulWidget {
 
 class _restRegState extends State<restReg> {
   final _formKey=GlobalKey<FormState>();
+  final RestAuth restAuth=new RestAuth();
   Restaurant restaurant=new Restaurant();
+  late final int restId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +32,7 @@ class _restRegState extends State<restReg> {
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
               child: Text(
-                "Customer Register",
+                "Restaurant Register",
                 style: TextStyle(
                   color: Colors.red.shade300,
                   fontWeight: FontWeight.w400,
@@ -38,7 +42,7 @@ class _restRegState extends State<restReg> {
             Container(
               padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
               child: Text(
-                "Name",
+                "Restaurant Name",
                 style:TextStyle(
                   color: Colors.red.shade300,
                   fontSize: 20,
@@ -56,10 +60,10 @@ class _restRegState extends State<restReg> {
                   )
                 ),
                 validator: (value){
-                  return value!.isEmpty?"Enter Name":null;
+                  return value!.isEmpty?"Enter Restaurant Name":null;
                 },
                 onSaved: (value){
-                 restaurant.restaurantName=value.toString();
+                 restaurant.restName=value.toString();
                 },
               ),
             ),
@@ -78,7 +82,7 @@ class _restRegState extends State<restReg> {
               child: TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.white,
-                  labelText:"Name",
+                  labelText:"Password",
                   labelStyle: TextStyle(
                     color: Colors.red.shade300
                   )
@@ -87,14 +91,21 @@ class _restRegState extends State<restReg> {
                   return value!.isEmpty?"Enter Password":null;
                 },
                 onSaved: (value){
-                  restaurant.password=value.toString();
+                  restaurant.restPassword=value.toString();
                 },
               ),
             ),
             ElevatedButton(
-              onPressed: (){
+              onPressed: () async {
               //add to db
-
+                if(_formKey.currentState!.validate()){
+                  _formKey.currentState!.save();
+                  restaurant.restId=await(restAuth.getcountRest('restaurant')  )+1;
+                  print("rest id in rest reg:"+restaurant.restId.toString());
+                  await restAuth.addRest(restaurant,'restaurant');
+                  // Navigator.pushReplacementNamed(context,'/addingItem');
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>adding_item(restId:restaurant.restId)));
+                }
               }, 
               child: Text(
                 "Register",

@@ -1,4 +1,6 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapplication/screens/oders_screen/adding_new_item.dart';
 import 'screens/reg_screens/cust_reg.dart';
 import 'screens/reg_screens/main_reg.dart';
 import 'screens/reg_screens/rest_reg.dart';
@@ -21,7 +23,8 @@ class _myAppState extends State<myApp> {
       routes: {
         '/registerRest':(context)=>restReg(),
         '/':(context)=>mainRegister(),
-        '/registerUser':(context)=>custReg() 
+        '/registerUser':(context)=>custReg(),
+        '/addingItem':(context)=>adding_item(), 
       },
     );
   }
